@@ -6,7 +6,7 @@ import '@fontsource/roboto/700.css';
 
 const App = () => {
   return (
-    <div className='w-full h-screen'>
+    <div className={`bg-background w-full h-screen `}>
       <Outlet />
     </div>
   )

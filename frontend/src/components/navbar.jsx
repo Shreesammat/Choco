@@ -5,7 +5,11 @@ import StarsIcon from '@mui/icons-material/Stars';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react";
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { notesListAction } from "../redux/notesList";
+
 export const Navbar = () => {
     return (
         <div className="navbar bg-base-100">
@@ -54,11 +58,31 @@ export const Navbar = () => {
         </div>
     )
 }
-export const ProfileNavbar = () => {
+export const ProfileNavbar = ({ setKeepTheLatestNotesHidden }) => {
     const [addIconColor, setAddIconColor] = useState("")
     const [colorShowing, setColorShowing] = useState(false)
+    const [icon, setIcon] = useState(<AddCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />)
+
     const handleClick = () => {
+        setAddIconColor(() => {
+            if (!colorShowing)
+                return "";
+            else return "rgb(58, 56, 56)"
+        })
         setColorShowing(prev => !prev)
+        setIcon(() => {
+            if (colorShowing) return <motion.div
+                animate={{ rotate: 0, scale: 1 }}
+                initial={{ rotate: 180, scale: 1.2 }}
+            >
+                <AddCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />
+            </motion.div>
+            else return (<motion.div
+                initial={{ rotate: 0, scale: 1 }}
+                animate={{ rotate: 180, scale: 1.2 }}
+            ><RemoveCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />
+            </motion.div>)
+        })
     }
     return (
         <>
@@ -69,22 +93,20 @@ export const ProfileNavbar = () => {
                     <p className="">Choco</p>
                     <SchoolIcon />
                 </div>
+
                 <motion.div
                     onClick={handleClick}
-                    onMouseEnter={() => setAddIconColor("rgb(58, 56, 56) ")}
-                    onMouseLeave={() => setAddIconColor("")}
                     className="cursor-pointer active:scale-90 ease-linear duration-75"
-
                 >
-                    <AddCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />
+                    {icon}
                 </motion.div>
                 <br />
                 <AnimatePresence>
                     {colorShowing && <motion.div className="flex flex-col gap-4">
                         {[
                             {
-                                color: "bg-blue-400",
-                                borderColor: "bg-blue-600"
+                                color: "bg-yellow-400",
+                                borderColor: "bg-yellow-600"
                             },
                             {
                                 color: "bg-red-400",
@@ -95,11 +117,15 @@ export const ProfileNavbar = () => {
                                 borderColor: "bg-purplel-600"
                             },
                             {
+                                color: "bg-blue-400",
+                                borderColor: "bg-blue-600"
+                            },
+                            {
                                 color: "bg-green-400",
                                 borderColor: "bg-green-600"
                             },
 
-                        ].map((val, i) => <Bulletcolor key={i} color={val.color} borderColor={val.borderColor} delay={i/10} />)}
+                        ].map((val, i) => <Bulletcolor setKeepTheLatestNotesHidden={setKeepTheLatestNotesHidden} key={i} color={val.color} borderColor={val.borderColor} delay={i / 10} />)}
                     </motion.div>}
                 </AnimatePresence>
             </div>
@@ -108,13 +134,57 @@ export const ProfileNavbar = () => {
 }
 
 
-const Bulletcolor = ({ color, borderColor, delay }) => {
-    return <motion.div
-        initial={{y: -40, opacity: 0}}
-        animate={{y: 0, opacity:1}}
-        exit={{y: -40, opacity: 0}}
-        transition={{delay, type: "spring"}}
-        className={`rounded-full w-4 border border-${borderColor} aspect-square ${color}`}>
-    </motion.div>
+const Bulletcolor = ({ color, borderColor, delay, setKeepTheLatestNotesHidden }) => {
+    const dispatch = useDispatch()
+    const [startAnimate, setStartAnimate] = useState(false)
+    const [dimension, setDimension] = useState(
+        {
+            width: "1rem", height: "1rem"
+        }
+    )
+
+    useEffect(() => {
+        if(!startAnimate) return;
+        const timeout = setTimeout(() => {
+            setStartAnimate(false)
+        }, 1000);
+
+        return () => clearTimeout(timeout)
+
+    }, [startAnimate])
+
+
+    const handleClick = () => {
+        const noteBox = document.querySelector('.noteBox');
+        let w, h;
+        if (noteBox) {
+            const { width, height } = noteBox.getBoundingClientRect();
+            w = width, h = height;
+        }
+        setTimeout(() => {
+            dispatch(notesListAction.addNote({ text: "i will learn complete devops.", createdDate: "21 March, 2023", colorType: 2 }))
+        }, 10);
+        setStartAnimate(true)
+        setKeepTheLatestNotesHidden(true)
+        setDimension({ width: w, height: h })
+    }
+
+    return <div className="relative">
+        <motion.div
+            initial={{ y: -40, opacity: 0}}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -40, opacity: 0 }}
+            transition={{ delay, type: "spring" }}
+            onClick={handleClick}
+            className={`rounded-full cursor-pointer active:scale-75 ease-linear duration-75 w-4 border border-${borderColor} aspect-square ${color}`}>
+        </motion.div>
+        {startAnimate && <motion.div
+            initial={{ opacity: 0, top: "13rem", left: "2rem", width: "1rem", height: "1rem" }}
+            animate={{ opacity: 1, top: "5rem", left:"9rem",  width: dimension.width, height: dimension.height, borderRadius:"0.5rem" }}
+            exit={{ opacity: 0 }}
+            onClick={handleClick}
+            className={`rounded-full fixed cursor-pointer active:scale-75 ease-linear duration-75  border border-${borderColor} aspect-square ${color}`}>
+        </motion.div>}
+    </div>
 }
 
