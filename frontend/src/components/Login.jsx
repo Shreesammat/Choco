@@ -20,6 +20,7 @@ const Login = () => {
       });
       console.log("The signIn response is", data);
       dispatch(setUser(data.data.user));
+      localStorage.setItem("jwtToken", JSON.stringify(data.data.token));
       await fetchNotes(import.meta.env.VITE_NOTES_URL);
       navigate("/u/:data.data.user.username");
     } catch (error) {
