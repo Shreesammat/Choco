@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { signIn } = useFetch();
+  const { signIn, fetchNotes } = useFetch();
   const url = import.meta.env.VITE_LOGIN_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +19,7 @@ const Login = () => {
         password,
       });
       dispatch(setUser(data.data.user));
+      // await fetchNotes(import.meta.env.VITE_NOTES_URL);
       navigate("/u/:data.data.user.username");
     } catch (error) {
       console.log(error);

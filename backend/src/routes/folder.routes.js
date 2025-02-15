@@ -150,6 +150,6 @@ router.get('/user/', verifyJWT, getFoldersByUserId);
  *               items:
  *                 $ref: '#/components/schemas/Note'
  */
-router.get('/:folderId/notes', verifyJWT, getNotesInFolder);
+router.post('/:folderId/notes', verifyJWT, getNotesInFolder);
 
 export default router;

@@ -12,7 +12,7 @@ const SignUp = () => {
   const [loading, setLoading ] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { signUp } = useFetch();
+  const { signUp, fetchNotes } = useFetch();
   const url = import.meta.env.VITE_REGISTER_URL;
   const handleSubmit = async (e) => {
     setLoading(true)
@@ -26,6 +26,7 @@ const SignUp = () => {
       });
       setLoading(false)
       dispatch(setUser(data.data));
+      await fetchNotes(import.meta.env.VITE_NOTES_URL);
       navigate("/u/:data.data.username");
     } catch (error) {
       console.log(error);

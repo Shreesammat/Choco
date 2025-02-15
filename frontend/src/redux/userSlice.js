@@ -9,6 +9,9 @@ const userSlice = createSlice({
         setUser: (state, action) => {
             state.user = action.payload;
         },
+        setNotesList: (state, action) => {
+            state.notesList = action.payload;
+        }
     },
 });
 
