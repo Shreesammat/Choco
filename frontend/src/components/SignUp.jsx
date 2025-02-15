@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useFetch from '../hooks/useFetch';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
@@ -9,11 +9,13 @@ const SignUp = () => {
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState(""); 
   const [password, setPassword] = React.useState("");
+  const [loading, setLoading ] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { signUp, fetchNotes } = useFetch();
   const url = import.meta.env.VITE_REGISTER_URL;
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     try {
       const data = await signUp(url, {
@@ -22,15 +24,19 @@ const SignUp = () => {
         email,
         password,
       });
+      setLoading(false)
       dispatch(setUser(data.data));
       const love = await fetchNotes(import.meta.env.VITE_NOTES_URL);
       console.log("The notes fetch res is:",love);
       navigate("/u/:data.data.username");
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
   return (
+    <>
+   
     <div className='w-full h-screen flex justify-center items-center dark:bg-gray-900 bg-gray-100'>
       <div className="w-96 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white">
@@ -118,7 +124,7 @@ const SignUp = () => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
           >
-            Sign Up
+            {loading ? "Signinig up": "Sign up"}
           </button>
         </form>
 
@@ -130,6 +136,8 @@ const SignUp = () => {
         </p>
       </div>
     </div>
+    </>
+    
   )
 }
 

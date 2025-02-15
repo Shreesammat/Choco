@@ -99,7 +99,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay, type: "spring" }}
-            className={`sm:max-w-80 max-w-[350px] w-full text-black flex flex-col p-5 h-full min-h-52 max-h-96 ${lightColor} ${keepTheLatestNotesHidden && delay === 0 && 'invisible'} rounded-3xl noteBox`}>
+            className={`sm:max-w-80 max-w-[350px] w-full text-black flex flex-col p-5 h-full ${lightColor} ${keepTheLatestNotesHidden && delay === 0 && 'invisible'} rounded-3xl noteBox`}>
             <div className="h-[90%]" >
                 {isEditing ?
 
@@ -139,22 +139,26 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                             <StarIcon fillOpacity={100} color="yellow" fill={`${noteObj.favorite ? 'yellow' : "white"}`} onClick={makeFav} className="cursor-pointer  active:scale-90  ease-linear duration-75" />
                         </div>
                         {keepTheLatestNotesHidden && delay === 0 ?
-                            <p className="text-stone-800 text-lg">{noteObj.title}</p>
+                            <p className="text-stone-800 text-sm sm:text-lg">{noteObj.title}</p>
                             :
                             <motion.p
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                className="text-stone-900 text-xl font-medium">{noteObj.title}</motion.p>
+                                className="text-stone-900 text-sm sm:text-lg font-medium">{noteObj.title}</motion.p>
 
                         }
                         <br />
                         {keepTheLatestNotesHidden && delay === 0 ?
-                            <p className="text-stone-800 text-lg">{noteObj.content}</p>
+                            <div className="h-[55%] overflow-y-scroll">
+                                <p className="text-stone-800 text-sm sm:text-lg">{noteObj.content}</p>
+                            </div>
                             :
-                            <motion.p
+                            <div className="h-[55%] overflow-y-scroll scroll-smooth ">
+                                <motion.p
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                className="text-stone-900 text-xl text-opacity-90 ">{noteObj.content}</motion.p>
+                                className="text-stone-900 text-sm sm:text-lg text-opacity-90 ">{noteObj.content}</motion.p>
+                            </div>
 
                         }
                     </>
@@ -163,7 +167,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
             </div>
 
 
-            <div className="flex py-3 items-center">
+            <div className="flex pb-3 items-center">
 
                 {keepTheLatestNotesHidden && delay === 0 ?
                     <div
@@ -191,25 +195,25 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
             <div className="flex justify-between items-center">
 
                 {keepTheLatestNotesHidden && delay === 0 ?
-                    <p className="text-stone-800 text-lg ">{noteObj.createdDate}</p>
+                    <p className="text-stone-800 text-sm sm:text-lg ">{noteObj.createdDate}</p>
                     :
                     <motion.p
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        className="text-stone-800 text-lg text-opacity-75">{noteObj.createdDate}</motion.p>
+                        className="text-stone-800 text-xs sm:text-lg text-opacity-75">{noteObj.createdDate}</motion.p>
                 }
                 {!isEditing ?
                     <div
                         onClick={() => setIsEditing(true)}
                         className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
                         <Pencil className={`text-stone-200`} />
-                    </div>:
-                <div
-                    onClick={() => saveNotes()}
-                    className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
-                    <SaveIcon className={`text-stone-200`} />
-                </div>
-            }
+                    </div> :
+                    <div
+                        onClick={() => saveNotes()}
+                        className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
+                        <SaveIcon className={`text-stone-200`} />
+                    </div>
+                }
             </div>
         </motion.div>
     </>)

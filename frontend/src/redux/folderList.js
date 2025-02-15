@@ -1,18 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const FoldersInitialState = [
-    {
-        name: "coding",
-        notesArr: [
-            "id1", "id2"
-        ],
-        
-    }
-]
 
 const foldersSlice = createSlice({
     name: 'folders',
-    initialState: FoldersInitialState,
+    initialState: [
+        {name:"lksajdf", notesList: []}
+    ],
     reducers: {
         setFolder: (state, action) => {
             if(action.payload)
