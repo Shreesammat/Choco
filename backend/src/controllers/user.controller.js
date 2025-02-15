@@ -35,7 +35,7 @@ const registerUser = asyncHandler( async (req, res) => {
     })
 
     if (existedUser) {
-        throw new ApiError(409, "User with email or username already exists")
+        throw new ApiError(400, "User with email or username already exists")
     }
     
     const user = await User.create({
@@ -205,8 +205,6 @@ const updateUserAvatar = asyncHandler(async(req, res) => {
         new ApiResponse(200, user, "Avatar image updated successfully")
     )
 })
-
-
 
 export {
     registerUser,
