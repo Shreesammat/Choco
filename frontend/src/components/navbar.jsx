@@ -22,7 +22,7 @@ const Navbar = () => {
     <nav className="bg-white dark:bg-black shadow-lg w-full fixed top-0 z-50">
       <div className="w-full mx-auto px-8 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
-          Choco
+          NoteMate
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
@@ -156,8 +156,9 @@ export const ProfileNavbar = ({ setKeepTheLatestNotesHidden }) => {
       </div>
       <div className="fixed h-screen w-28 z-50 flex flex-col justify-start gap-2 items-center left-0 top-0 bg-white border-r-stone-200 border">
         <div className="flex gap-2 justify-start h-fit items-center p-3 pt-4 pb-10">
-          <p className="">Choco</p>
-          <SchoolIcon />
+        <Link to="/">
+            <SchoolIcon size="large" />
+          </Link>
         </div>
         <motion.div
           onClick={handleClick}
@@ -277,13 +278,13 @@ export const ProfileNavbar2 = ({ setKeepTheLatestNotesHidden }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(!colorShowing) return;
-    const timeout =  setTimeout(() => {
+    if (!colorShowing) return;
+    const timeout = setTimeout(() => {
       setIcon(
         <motion.div
           animate={{ rotate: 0, scale: 1 }}
           initial={{ rotate: 180, scale: 1.2 }}
-          
+
         >
           <AddCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />
         </motion.div>
@@ -297,6 +298,7 @@ export const ProfileNavbar2 = ({ setKeepTheLatestNotesHidden }) => {
   const handleClick = () => {
 
     dispatch(foldersAction.addFolder({ draft: true }))
+    console.log("dispatching draft folder")
 
     setAddIconColor(() => {
       if (!colorShowing)
@@ -339,8 +341,9 @@ export const ProfileNavbar2 = ({ setKeepTheLatestNotesHidden }) => {
       </div>
       <div className="fixed h-screen w-28 z-50 flex flex-col justify-start gap-2 items-center left-0 top-0 bg-white border-r-stone-200 border">
         <div className="flex gap-2 justify-start h-fit items-center p-3 pt-4 pb-10">
-          <p className="">Choco</p>
-          <SchoolIcon />
+          <Link to="/">
+            <SchoolIcon size="large" />
+          </Link>
         </div>
         <motion.div
           onClick={handleClick}

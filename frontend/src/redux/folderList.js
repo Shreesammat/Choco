@@ -14,14 +14,19 @@ const foldersSlice = createSlice({
     name: 'folders',
     initialState: FoldersInitialState,
     reducers: {
+        setFolder: (state, action) => {
+            if(action.payload)
+            state = action.payload
+            else state = []
+        },
         addFolder: (state, action) => {
             state.unshift(action.payload);
         },
         removeFolder: (state, action) => {
-            return state.filter(note => folder.id !== action.folder.id);
+            return state.filter(folder => folder.id !== action.folder.id);
         },
         updateFolder: (state, action) => {
-            const index = state.findIndex(note => folder.id === action.payload.id);
+            const index = state.findIndex(folder => folder.id === action.payload.id);
             if (index !== -1) {
                 state[index] = action.payload;
             }
