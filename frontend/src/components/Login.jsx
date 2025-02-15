@@ -4,11 +4,12 @@ import useFetch from "../hooks/useFetch";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { SignIn } = useFetch();
+  const { signIn } = useFetch();
+  const url = import.meta.env.VITE_LOGIN_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await SignIn("http://localhost:5000/api/auth/login", {
+      const data = await signIn(url, {
         email,
         password,
       });
