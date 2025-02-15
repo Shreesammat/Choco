@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BadgePlus, DeleteIcon, EditIcon, Link, Pencil, Save, SaveIcon, Trash } from "lucide-react";
+import { BadgePlus, DeleteIcon, EditIcon, Link, Pencil, Save, SaveIcon, StarIcon, Trash } from "lucide-react";
 import { modalContentAtom } from "../redux/modal.jsx";
 import { useSetRecoilState } from "recoil";
 import { Modal } from "./modal.jsx";
@@ -8,13 +8,32 @@ import { ElectricalServicesSharp } from "@mui/icons-material";
 
 export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
 
-    const [isEditing, setIsEditing] = useState(false)
+    const [isEditing, setIsEditing] = useState(noteObj.draft)
     const [modalContent, setModalContent] = useState(<></>)
     const [lightColor, setLightColor] = useState("");
     const [darkColor, setDarkColor] = useState("")
     const [modalTitle, setModalTitle] = useState("");
+    const [showModal, setShowModal] = useState(false)
 
-
+    let colorType;
+    switch (colorType) {
+        case "bg-midYellowLight" :
+            colorType = 1;
+            break;
+        case "bg-midRedLight":
+            colorType = 2;
+            break;
+            
+        case "bg-midPurpleLight":
+            colorType = 3;
+            break;
+        case "bg-midBlueLight":
+            colorType = 4;
+            break;
+        case "bg-midGreenLight":
+            colorType = 5;
+            break;
+    }
 
     useEffect(() => {
         switch (noteObj.colorType) {
@@ -40,7 +59,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                 break;
         }
     }, [])
-    const borderColor = darkColor.slice(3);
+    const borderColor = "stone-200"
     console.log(noteObj)
     const showLinks = () => {
 
@@ -49,7 +68,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
 
         </div>)
         setModalTitle("All attached urls")
-
+        setShowModal(true)
         document.getElementById('my_modal_1').showModal();
     }
 
@@ -58,14 +77,20 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
             <AddNewUrlArea />
         </div>)
         setModalTitle("Attach a new url!")
-
+        setShowModal(true)
         document.getElementById('my_modal_1').showModal();
     }
 
+    const makeFav = () => {
+        //change fav value  favorite
+    }
+
     return (<>
-        <Modal title={modalTitle} >
+        {showModal && <Modal 
+        modalIsOpen={showModal}
+        onClose={() => setShowModal(false)} title={modalTitle} >
             {modalContent}
-        </Modal>
+        </Modal>}
         <motion.div
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -73,7 +98,11 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
             className={`sm:max-w-80 max-w-[350px] w-full flex flex-col p-5 h-full min-h-52 max-h-72 ${lightColor} ${keepTheLatestNotesHidden && delay === 0 && 'invisible'} rounded-3xl noteBox`}>
             <div className="h-[90%]" >
                 {isEditing ?
+                   
                     <div className="flex flex-col h-full gap-3" >
+                         <div className="h-10 w-full flex justify-end"> 
+                            <StarIcon onClick={makeFav}  className="cursor-pointer active:scale-90  ease-linear duration-75"/>
+                         </div>
                         {keepTheLatestNotesHidden && delay === 0 ?
                             <input
                                 className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
@@ -99,6 +128,9 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                     </div>
                     :
                     <>
+                    <div className="h-10 w-full flex justify-end"> 
+                            <StarIcon fillOpacity={100} color="yellow" fill={`${noteObj.favorite ? 'yellow': "white"}`}  onClick={makeFav}  className="cursor-pointer  active:scale-90  ease-linear duration-75"/>
+                         </div>
                         {keepTheLatestNotesHidden && delay === 0 ?
                             <p className="text-stone-800 text-lg">{noteObj.title}</p>
                             :
@@ -136,7 +168,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                         className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
                         <BadgePlus
                             onClick={AddLink}
-                            
+
                         />
                     </div>
                 }
@@ -177,8 +209,8 @@ const AddNewUrlArea = () => {
         <input
             className="bg-transparent focus:outline-none border border-stone-200 rounded-md p-1"
             value={URL}
-            onChange={(e) => setURL(e.target.value)} /> 
-        <Save onClick={handleSave}  className="cursor-pointer text-midGreenLight  active:scale-90 ease-linear duration-75"  />
+            onChange={(e) => setURL(e.target.value)} />
+        <Save onClick={handleSave} className="cursor-pointer text-midGreenLight  active:scale-90 ease-linear duration-75" />
     </div>
 }
 

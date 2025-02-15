@@ -6,7 +6,7 @@ const notesListInitialState = [
         content: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
         createdDate: "May 21, 2020.",
         colorType: 2,
-        favorite: false,
+        favorite: true,
         refUrl: ["google.com", "http/askdsflk.lavru"],
         draft: false
     },
