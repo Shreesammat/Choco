@@ -1,9 +1,14 @@
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { signIn } = useFetch();
   const url = import.meta.env.VITE_LOGIN_URL;
   const handleSubmit = async (e) => {
@@ -13,7 +18,8 @@ const Login = () => {
         email,
         password,
       });
-      console.log(data);
+      dispatch(setUser(data.data.user));
+      navigate("/u/:data.data.user.username");
     } catch (error) {
       console.log(error);
     }

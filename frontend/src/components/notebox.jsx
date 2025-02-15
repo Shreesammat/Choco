@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BadgePlus, DeleteIcon, EditIcon, Link, Pencil, Save, SaveIcon, Trash } from "lucide-react";
-import { useSetRecoilState } from "recoil";
-import { ElectricalServicesSharp } from "@mui/icons-material";
-
+import { BadgePlus, EditIcon, Link, Pencil, Save, SaveIcon, Trash } from "lucide-react";
+import {Modal} from "./modal";
 export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
 
     const [isEditing, setIsEditing] = useState(false)
