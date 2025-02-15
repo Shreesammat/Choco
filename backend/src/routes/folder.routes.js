@@ -128,7 +128,7 @@ router.get('/user/', verifyJWT, getFoldersByUserId);
 /**
  * @swagger
  * /folders/{folderId}/notes:
- *   get:
+ *   post:
  *     summary: Get all notes in a folder
  *     tags: [Folders]
  *     security:
