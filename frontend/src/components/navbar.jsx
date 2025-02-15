@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import useTheme from "../hooks/useTheme";
 import { motion, AnimatePresence } from "framer-motion"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import SearchIcon from '@mui/icons-material/Search';
 import SchoolIcon from '@mui/icons-material/School';
 import StarsIcon from '@mui/icons-material/Stars';
@@ -16,7 +16,6 @@ import { notesListAction } from "../redux/notesList";
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const user = useSelector((state) => state.user);
     
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-lg w-full fixed top-0 z-50">
@@ -47,22 +46,13 @@ const Navbar = () => {
             )}
           </button>
 
-          {user ? (
-            <Link to="/profile" className="flex items-center gap-2">
-              <img
-                src="/avatar.png"
-                alt="User"
-                className="w-9 h-9 rounded-full border border-gray-300 dark:border-gray-600"
-              />
-            </Link>
-          ) : (
+          
             <Link
               to="/login"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
             >
               Login
             </Link>
-          )}
         </div>
 
         <button
@@ -101,16 +91,7 @@ const Navbar = () => {
             <span className="text-gray-700 dark:text-gray-300">Toggle Theme</span>
           </button>
 
-          {user ? (
-            <Link to="/profile" className="flex items-center gap-2">
-              <img
-                src="/avatar.png"
-                alt="User"
-                className="w-9 h-9 rounded-full border border-gray-300 dark:border-gray-600"
-              />
-              <span className="text-gray-700 dark:text-gray-300">Profile</span>
-            </Link>
-          ) : (
+          
             <Link
               to="/login"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all text-center"
@@ -118,7 +99,6 @@ const Navbar = () => {
             >
               Login
             </Link>
-          )}
         </div>
       </div>
     </nav>
