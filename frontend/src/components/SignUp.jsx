@@ -1,15 +1,19 @@
-import { useState } from "react";
-import useFetch from "../hooks/useFetch";
+import React from 'react'
+import useFetch from '../hooks/useFetch';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignUp = () => {
+  const [name, setName] = React.useState("");
+  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState(""); 
+  const [password, setPassword] = React.useState("");
   const { signIn } = useFetch();
-  const url = import.meta.env.VITE_LOGIN_URL;
+  const url = import.meta.env.VITE_REGISTER_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const data = await signIn(url, {
+        name,
+        username,
         email,
         password,
       });
@@ -19,13 +23,49 @@ const Login = () => {
     }
   };
   return (
-    <div className="w-full h-screen flex justify-center items-center dark:bg-gray-900 bg-gray-100">
+    <div className='w-full h-screen flex justify-center items-center dark:bg-gray-900 bg-gray-100'>
       <div className="w-96 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white">
-          Login
+      <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white">
+          Sign Up
         </h2>
-
         <form className="mt-6" onSubmit={handleSubmit}>
+        <div className="mb-4">
+            <label
+              htmlFor="Full Name"
+              className="block text-sm font-semibold text-gray-600 dark:text-gray-300"
+            >
+              Full Name
+            </label>
+            <input
+              id="Full Name"
+              type="text"
+              name="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2 mt-2 border rounded-md bg-white dark:bg-gray-700 dark:text-white text-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your Full Name"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="username"
+              className="block text-sm font-semibold text-gray-600 dark:text-gray-300"
+            >
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-2 mt-2 border rounded-md bg-white dark:bg-gray-700 dark:text-white text-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -87,7 +127,7 @@ const Login = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default SignUp

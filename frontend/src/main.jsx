@@ -6,14 +6,16 @@ import LandingPage from './screens/LandingPage.jsx'
 import { ProfilePage } from './screens/ProfilePage.jsx'
 import { Provider } from 'react-redux'
 import { store } from './redux/store.js'
-import { Modal } from "./components/modal.jsx"
-import { RecoilRoot } from 'recoil'
+import Login from './components/Login.jsx'
+import SignUp from './components/SignUp.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route index element={<LandingPage />} />
-      <Route path='u/:username' element={<ProfilePage />} />
+      <Route index element={<LandingPage/>} />
+      <Route path='/login' element={<Login/>} />
+      <Route path='/register' element={<SignUp/>} />
+      <Route path='u/:username' element={<ProfilePage/>} />
     </Route>
   )
 )
