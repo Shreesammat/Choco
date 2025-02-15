@@ -1,96 +1,88 @@
 import Note from '../models/note.model.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { ApiError } from '../utils/ApiError.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
 
-export const createNote = async (req, res) => {
-    try {
-        const { userId, referenceUrl, title, content, isFavorite, colorType } = req.body;
-
-        if (!userId || !title || !content || !colorType) {
-            return res.status(400).json({ message: 'Missing required fields' });
-        }
-
-        const newNote = new Note({
-            userId,
-            referenceUrl: referenceUrl || [],
-            title,
-            content,
-            isFavorite: isFavorite || false,
-            colorType
-        });
-
-        await newNote.save();
-
-        res.status(201).json(newNote);
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong', error: error.message });
+export const createNote = asyncHandler(async (req, res) => {
+    const { referenceUrl, title, content, isFavorite, colorType } = req.body;
+    const userId = req.user.id;
+    if (!userId || !title || !content || !colorType) {
+        return res.status(400).json({ message: 'Missing required fields' });
     }
-};
 
-export const getNotes = async (req, res) => {
-    try {
-        const notes = await Note.find();
-        res.status(200).json(notes);
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong', error: error.message });
+    const newNote = new Note({
+        userId,
+        referenceUrl: referenceUrl,
+        title,
+        content,
+        isFavorite: isFavorite,
+        colorType
+    });
+
+    await newNote.save();
+    res.status(201).json(newNote);
+});
+
+export const getNotes = asyncHandler(async (req, res) => {
+    const notes = await Note.find({ userId: req.user.id }); // Fixed filter issue
+    res.status(200).json(notes);
+});
+
+export const getNoteById = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const note = await Note.findOne({_id:req.params.id, userId: userId});
+
+    if (!note) {
+        return res.status(404).json({ message: 'Note not found' });
     }
-};
 
+    res.status(200).json(note);
+});
 
-export const getNoteById = async (req, res) => {
-    try {
-        const note = await Note.findById(req.params.id);
+export const updateNote = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const {noteId, ...updatedFields } = req.body;
 
-        if (!note) {
-            return res.status(404).json({ message: 'Note not found' });
-        }
-
-        res.status(200).json(note);
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong', error: error.message });
+    if (!userId || !noteId) {
+        return res.status(400).json({ message: 'Missing required fields' });
     }
-};
 
-
-export const updateNote = async (req, res) => {
-    try {
-        const { userId, referenceUrl, title, content, isFavorite, colorType } = req.body;
-
-        if (!userId || !title || !content || !colorType) {
-            return res.status(400).json({ message: 'Missing required fields' });
-        }
-
-        const updatedNote = await Note.findByIdAndUpdate(
-            req.params.id,
-            {
-                userId,
-                referenceUrl: referenceUrl || [],
-                title,
-                content,
-                isFavorite: isFavorite || false,
-                colorType
-            },
-            { new: true } 
-        );
-
-        if (!updatedNote) {
-            return res.status(404).json({ message: 'Note not found' });
-        }
-
-        res.status(200).json(updatedNote);
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong', error: error.message });
+    const updatedNotefield = {
+        noteId,
+        ...updatedFields
     }
-};
 
-export const deleteNote = async (req, res) => {
-    try {
-        const deletedNote = await Note.findByIdAndDelete(req.params.id);
+    const updatedNote = await Note.findByIdAndUpdate(
+        noteId,
+        {$set: updatedNotefield},
+        {new: true}
+    )
 
-        if (!deletedNote) {
-            return res.status(404).json({ message: 'Note not found' });
-        }
-
-        res.status(200).json({ message: 'Note deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong', error: error.message });
+    if (!updatedNote) {
+        return res.status(404).json({ message: 'Note not found' });
     }
-};
+
+    res.status(201).json(updatedNote);
+});
+
+export const deleteNote = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const note = await Note.findById(req.params.id);
+
+    if(!note) {
+        throw new ApiError(404, "Note not found!")
+    }
+
+    if(note.userId.toString() !== userId) {
+        throw new ApiError(403, "Unauthorized Access!")
+    }
+
+    const deletedNote = await Note.findByIdAndDelete(req.params.id);
+    if(!deletedNote) {
+        throw new ApiError(400, "Failed to delete Note")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, "Note deleted successfully"))
+});
