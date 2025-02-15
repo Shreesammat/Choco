@@ -6,16 +6,16 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 
 
-const generateAccessAndRefereshTokens = async(userId) =>{
+const generateJwtToken = async(userId) =>{
     try {
         const user = await User.findById(userId)
-        const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefreshToken()
+        const jwtToken = user.generateJwtToken()
+        
 
-        user.refreshToken = refreshToken
+        user.jwtToken = jwtToken
         await user.save({ validateBeforeSave: false })
 
-        return {accessToken, refreshToken}
+        return jwtToken
 
 
     } catch (error) {
@@ -102,9 +102,9 @@ const loginUser = asyncHandler(async (req, res) =>{
     throw new ApiError(401, "Invalid user credentials")
     }
 
-   const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
+   const {jwtToken} = await generateJwtToken(user._id)
 
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+    const loggedInUser = await User.findById(user._id).select("-password")
 
     const options = {
         httpOnly: true,
@@ -113,13 +113,13 @@ const loginUser = asyncHandler(async (req, res) =>{
 
     return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("jwtToken", jwtToken, options)
     .json(
         new ApiResponse(
             200, 
             {
-                user: loggedInUser, accessToken, refreshToken
+                user: loggedInUser,
+                token: jwtToken
             },
             "User logged In Successfully"
         )
@@ -132,7 +132,7 @@ const logoutUser = asyncHandler(async(req, res) => {
         req.user._id,
         {
             $unset: {
-                refreshToken: 1 
+                jwtToken: 1 
             }
         },
         {
@@ -147,15 +147,12 @@ const logoutUser = asyncHandler(async(req, res) => {
 
     return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
+    .clearCookie("jwtToken", options)
     .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
 const changeCurrentPassword = asyncHandler(async(req, res) => {
     const {oldPassword, newPassword} = req.body
-
-    
 
     const user = await User.findById(req.user?._id)
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
