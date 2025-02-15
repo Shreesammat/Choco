@@ -6,11 +6,14 @@ const SignUp = () => {
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState(""); 
   const [password, setPassword] = React.useState("");
-  const { SignIn } = useFetch();
+  const { signIn } = useFetch();
+  const url = import.meta.env.VITE_REGISTER_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await SignIn("http://localhost:5000/api/auth/login", {
+      const data = await signIn(url, {
+        name,
+        username,
         email,
         password,
       });
