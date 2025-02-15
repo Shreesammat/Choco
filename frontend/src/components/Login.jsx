@@ -71,12 +71,6 @@ const Login = () => {
             />
           </div>
 
-          <div className="flex justify-between items-center mb-4">
-            <a href="#" className="text-sm text-blue-500 hover:underline">
-              Forgot password?
-            </a>
-          </div>
-
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"

@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav className="bg-white dark:bg-gray-900 shadow-lg w-full fixed top-0 z-50">
       <div className="w-full mx-auto px-8 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
-          YourApp
+          Choco
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
