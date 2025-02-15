@@ -4,22 +4,18 @@ import { User} from "../models/user.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-
-
 const generateJwtToken = async(userId) =>{
     try {
         const user = await User.findById(userId)
         const jwtToken = user.generateJwtToken()
-        
 
         user.jwtToken = jwtToken
         await user.save({ validateBeforeSave: false })
 
         return jwtToken
 
-
     } catch (error) {
-        throw new ApiError(500, "Something went wrong while generating referesh and access token")
+        throw new ApiError(500, "Something went wrong while generating JWT token")
     }
 }
 
@@ -41,32 +37,17 @@ const registerUser = asyncHandler( async (req, res) => {
     if (existedUser) {
         throw new ApiError(409, "User with email or username already exists")
     }
-
-
-    const avatarLocalPath = req.files?.avatar[0]?.path;    
-
-    if (!avatarLocalPath) {
-        throw new ApiError(400, "Avatar file is required")
-    }
-
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-
-    if (!avatar) {
-        throw new ApiError(400, "could not upload on cloudinary")
-    }
-   
-
+    
     const user = await User.create({
         fullName,
-        avatar: avatar.url,
-        email, 
+        avatar: '',
+        email,
         password,
         username: username.toLowerCase()
     })
 
     const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
+        "-password"
     )
 
     if (!createdUser) {

@@ -16,8 +16,8 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            lowecase: true,
-            trim: true, 
+            lowercase: true,
+            trim: true,
         },
         fullName: {
             type: String,
@@ -25,8 +25,8 @@ const userSchema = new Schema(
             index: true
         },
         avatar: {
-            type: String, 
-            required: true,
+            type: String,
+            default: "",
         },
     
         password: {
@@ -64,6 +64,5 @@ userSchema.methods.generateJwtToken = function(){
         }
     )
 }
-
 
 export const User = mongoose.model("User", userSchema)
