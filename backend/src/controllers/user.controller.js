@@ -12,7 +12,7 @@ const generateJwtToken = async(userId) =>{
         user.jwtToken = jwtToken
         await user.save({ validateBeforeSave: false })
 
-        return jwtToken
+        return jwtToken;
 
     } catch (error) {
         throw new ApiError(500, "Something went wrong while generating JWT token")
@@ -35,7 +35,7 @@ const registerUser = asyncHandler( async (req, res) => {
     })
 
     if (existedUser) {
-        throw new ApiError(409, "User with email or username already exists")
+        throw new ApiError(400, "User with email or username already exists")
     }
     
     const user = await User.create({
@@ -62,15 +62,15 @@ const registerUser = asyncHandler( async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) =>{
     
-    const {email, username, password} = req.body
+    const {email, password} = req.body
     console.log(email);
 
-    if (!username && !email) {
-        throw new ApiError(400, "username or email is required")
+    if (!email) {
+        throw new ApiError(400, "email is required")
     }
     
     const user = await User.findOne({
-        $or: [{username}, {email}]
+        $or: [{email}]
     })
 
     if (!user) {
@@ -83,7 +83,7 @@ const loginUser = asyncHandler(async (req, res) =>{
     throw new ApiError(401, "Invalid user credentials")
     }
 
-   const {jwtToken} = await generateJwtToken(user._id)
+   const jwtToken = await generateJwtToken(user._id)
 
     const loggedInUser = await User.findById(user._id).select("-password")
 
@@ -105,7 +105,6 @@ const loginUser = asyncHandler(async (req, res) =>{
             "User logged In Successfully"
         )
     )
-
 })
 
 const logoutUser = asyncHandler(async(req, res) => {
@@ -206,8 +205,6 @@ const updateUserAvatar = asyncHandler(async(req, res) => {
         new ApiResponse(200, user, "Avatar image updated successfully")
     )
 })
-
-
 
 export {
     registerUser,
