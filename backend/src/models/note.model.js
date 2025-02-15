@@ -7,6 +7,11 @@ const noteSchema = new Schema(
             ref: 'User',
             required: true
         },
+        folderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Folder',
+            required: true
+        },
         referenceUrl: {
             type: [String],
             required: true,

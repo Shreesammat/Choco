@@ -4,14 +4,15 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 
 export const createNote = asyncHandler(async (req, res) => {
-    const { referenceUrl, title, content, isFavorite, colorType } = req.body;
+    const { folderId, referenceUrl, title, content, isFavorite, colorType } = req.body;
     const userId = req.user.id;
-    if (!userId || !title || !content || !colorType) {
+    if (!userId || !folderId || !title || !content || !colorType) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const newNote = new Note({
         userId,
+        folderId,
         referenceUrl: referenceUrl,
         title,
         content,
@@ -24,7 +25,8 @@ export const createNote = asyncHandler(async (req, res) => {
 });
 
 export const getNotes = asyncHandler(async (req, res) => {
-    const notes = await Note.find({ userId: req.user.id }); // Fixed filter issue
+    const {folderId} = req.body;
+    const notes = await Note.find({ userId: req.user.id, folderId: folderId }); // Fixed filter issue
     res.status(200).json(notes);
 });
 
