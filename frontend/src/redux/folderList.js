@@ -1,22 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const foldersSlice = createSlice({
     name: 'folders',
-    initialState: [
-        {name:"lksajdf", notesList: []}
-    ],
+    initialState: [],
     reducers: {
         setFolder: (state, action) => {
-            if(action.payload)
-            state = action.payload
-            else state = []
+            return action.payload;
         },
         addFolder: (state, action) => {
-            state.unshift(action.payload);
+            const filteredState = state.filter(s => !s.draft);
+            filteredState.unshift(action.payload);
+            return filteredState;
         },
+
         removeFolder: (state, action) => {
-            return state.filter(folder => folder.id !== action.folder.id);
+            return state.filter(folder => folder.id !== action.payload.id);
         },
         updateFolder: (state, action) => {
             const index = state.findIndex(folder => folder.id === action.payload.id);
@@ -25,7 +23,7 @@ const foldersSlice = createSlice({
             }
         }
     }
-})
+});
 
 export const foldersAction = foldersSlice.actions;
-export default foldersSlice.reducer
+export default foldersSlice.reducer;

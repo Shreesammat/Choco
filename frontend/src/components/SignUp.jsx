@@ -30,7 +30,7 @@ const SignUp = () => {
       localStorage.setItem("jwtToken", JSON.stringify(data.token));
       const love = await fetchNotes(import.meta.env.VITE_NOTES_URL);
       console.log("The notes fetch res is:",love);
-      navigate("/u/:data.data.username");
+      navigate(`/u/${data.data.username}`);
     } catch (error) {
       console.log(error);
       setLoading(false)

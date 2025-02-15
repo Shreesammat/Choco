@@ -1,32 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
-import { persistReducer, persistStore } from "redux-persist";
-import notesListReducers from "./notesList";
-import themeSlice from "./themeSlice";
-import userSlice from "./userSlice";
 import folderReducer from "./folderList"
-import { combineReducers } from "redux";
+import { configureStore } from "@reduxjs/toolkit"
+import notesListReducers from "./notesList"
+import themeSlice from "./themeSlice"
+import userSlice from "./userSlice"
 
-const rootReducer = combineReducers({
-  notesList: notesListReducers,
-  theme: themeSlice,
-  user: userSlice,
-  folder: folderReducer
-});
+export const store =  configureStore ({
+    reducer: {
+        notesList: notesListReducers,
+        theme: themeSlice,
+        user: userSlice,
+        folder: folderReducer
+    }
+})
 
-const persistConfig = {
-  key: "root", 
-  storage,     
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false, 
-    }),
-});
-
-export const persistor = persistStore(store);

@@ -13,6 +13,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { notesListAction } from "../redux/notesList";
 import { foldersAction } from "../redux/folderList";
+import { v4 as uuidv4 } from 'uuid';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -330,7 +331,7 @@ export const ProfileNavbar2 = ({ setKeepTheLatestNotesHidden }) => {
 
   const handleClick = () => {
 
-    dispatch(foldersAction.addFolder({ draft: true }))
+    dispatch(foldersAction.addFolder({ draft: true, _id: uuidv4()}))
     console.log("dispatching draft folder")
 
     setAddIconColor(() => {

@@ -7,24 +7,29 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const[loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { signIn, fetchNotes } = useFetch();
   const url = import.meta.env.VITE_LOGIN_URL;
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     try {
       const data = await signIn(url, {
         email,
         password,
       });
-      console.log("The signIn response is", data);
+    
       dispatch(setUser(data.data.user));
+      console.log(data.data.token)
       localStorage.setItem("jwtToken", JSON.stringify(data.data.token));
       await fetchNotes(import.meta.env.VITE_NOTES_URL);
-      navigate("/u/:data.data.user.username");
+      setLoading(false)
+      navigate(`/u/${data.data.user.username}`);
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
   return (
@@ -78,7 +83,7 @@ const Login = () => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
           >
-            Login
+            {loading ? "Logging in...": "Login"}
           </button>
         </form>
 

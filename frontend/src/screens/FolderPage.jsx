@@ -5,6 +5,7 @@ import { ProfileNavbar2 } from "../components/navbar";
 import { Folder } from "../components/folder";
 import { foldersAction } from "../redux/folderList";
 import { useCustomFetch } from "../hooks/useFetch"
+import { Loader } from "../components/loader";
 
 export const FoldersPage = () => {
     const [keepTheLatestNotesHidden, setKeepTheLatestNotesHidden] = useState(false);
@@ -36,24 +37,50 @@ const ProfileMain = ({ keepTheLatestNotesHidden }) => {
 
 const FolderArea = () => {
 
-    const { data, loading } = useCustomFetch(import.meta.env.VITE_BASE_URL + "folders/user");
+    const [loading, setLoading] = useState(false)
     const folderList = useSelector(state => state.folder)
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(foldersAction.setFolder(data))
-    }, [folderList, dispatch])
+
+        setLoading(true);
+        const fetchData = async () => {
+            try {
+
+                const response = await fetch(import.meta.env.VITE_BASE_URL + "folders/user", {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem('jwtToken'))}`
+                    },
+
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                console.log("fetched data: ", result)
+                dispatch(foldersAction.setFolder(result))
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+                setLoading(false)
+            }
+        };
+        fetchData()
+    }, [dispatch])
 
     console.log(folderList)
+
     return (
         loading ? (
-            <div>loading..</div>
+            <div><Loader /></div>
         ) : (
             <div key={folderList.length} className="overflow-auto max-h-full scrollbar-thin scrollbar-webkit grid max-sm:place-items-center md:grid-cols-3 sm:grid-cols-2 gap-6 grid-cols-1 lg:grid-cols-4 row-auto">
 
-            {folderList.map((folder, ind) => <Folder folderObj={folder} delay={ind / 10} key={ind} />)}
+                {folderList.map((folder, ind) => <Folder folderObj={folder} delay={ind / 10} key={ind} />)}
 
-        </div>
+            </div>
 
 
         )
