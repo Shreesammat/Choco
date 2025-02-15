@@ -1,37 +1,38 @@
+import { Favorite } from "@mui/icons-material";
 import { createSlice } from "@reduxjs/toolkit";
 
 const notesListInitialState = [
     {
-        text: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
+        title: "lorem ipsum ipa de si",
+        content: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
         createdDate: "May 21, 2020.",
-        colorType: 1
+        colorType: 3,
+        favorite: false
     },
     {
-        text: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
+        title: "lorem ipsum ipa de si",
+        content: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
         createdDate: "May 21, 2020.",
-        colorType: 2
+        colorType: 1,
+        favorite: false
     },
     {
-        text: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
+        title: "lorem ipsum ipa de si",
+        content: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
         createdDate: "May 21, 2020.",
-        colorType: 1
+        colorType: 2,
+        favorite: false
     },
     {
-        text: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
+        title: "lorem ipsum ipa de si",
+        content: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
         createdDate: "May 21, 2020.",
-        colorType: 3
+        colorType: 1,
+        favorite: false
     },
-    {
-        text: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
-        createdDate: "May 21, 2020.",
-        colorType: 2
-    },
-    {
-        text: "Lorem ipsum dolor sit amet  pariatur et rem beatae fugit iste accusamus, velit, reprehenderit provident.",
-        createdDate: "May 21, 2020.",
-        colorType: 4
-    },
-   
+  
+
+
 ]
 
 const notesList = createSlice({

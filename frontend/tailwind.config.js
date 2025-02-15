@@ -18,7 +18,17 @@ export default {
         cred: "#ff4b4b",
         cyellow: "#ffd900",
         cpurple: "#ce82ff",
-        cwhite: "#d2d7dd"
+        cwhite: "#d2d7dd",
+        midRedLight: "#FC8181",
+        midRedDark: "#E53E3E",
+        midYellowLight: "#F6E05E",
+        midYellowDark: "#D69E2E",
+        midPurpleLight: "#9F7AEA",
+        midPurpleDark: "#6B46C1",
+        midBlueLight: "#63B3ED",
+        midBlueDark: "#3182CE",
+        midGreenLight: "#48BB78",
+        midGreenDark: "#2F855A",
       }
 
     },

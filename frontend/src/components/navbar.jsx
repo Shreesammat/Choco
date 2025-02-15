@@ -112,24 +112,24 @@ export const ProfileNavbar = ({ setKeepTheLatestNotesHidden }) => {
                     {colorShowing && <motion.div className="flex flex-col gap-4">
                         {[
                             {
-                                color: "bg-yellow-400",
-                                borderColor: "bg-yellow-600"
+                                color: "bg-midYellowLight", 
+                                borderColor: "bg-midYellowDark"
                             },
                             {
-                                color: "bg-red-400",
-                                borderColor: "bg-red-600"
+                                color: "bg-midRedLight",
+                                borderColor: "bg-midRedDark"
                             },
                             {
-                                color: "bg-purple-400",
-                                borderColor: "bg-purplel-600"
+                                color: "bg-midPurpleLight",
+                                borderColor: "bg-midPurpleDark"
                             },
                             {
-                                color: "bg-blue-400",
-                                borderColor: "bg-blue-600"
+                                color: "bg-midBlueLight",
+                                borderColor: "bg-midBlueDark"
                             },
                             {
-                                color: "bg-green-400",
-                                borderColor: "bg-green-600"
+                                color: "bg-midGreenLight",
+                                borderColor: "bg-midGreenDark"
                             },
 
                         ].map((val, i) => <Bulletcolor setKeepTheLatestNotesHidden={setKeepTheLatestNotesHidden} key={i} color={val.color} borderColor={val.borderColor} delay={i / 10} />)}
