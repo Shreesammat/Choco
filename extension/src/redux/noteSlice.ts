@@ -5,7 +5,7 @@ export interface Note {
     content: string;
     colour: string;
     isImportant: boolean;
-    refUrl: string;
+    refUrls?: string[];
 }
 
 const initialState: Note = {
@@ -13,7 +13,7 @@ const initialState: Note = {
     content: "",
     colour: "",
     isImportant: false,
-    refUrl: "",
+    refUrls: [],
 };
 
 const noteSlice = createSlice({
@@ -36,7 +36,8 @@ const noteSlice = createSlice({
         state.isImportant = action.payload;
     },
     setNoteRefUrl: (state, action: PayloadAction<string>) => {
-        state.refUrl = action.payload;
+        if(!state.refUrls) state.refUrls = [];
+        state.refUrls?.push(action.payload);
     },
     resetNoteState: () => initialState,
   },

@@ -4,8 +4,8 @@ export interface Note {
     title: string;
     content: string;
     colour: string;
-    isImportant: boolean;
-    refUrl?: string;
+    isFavourite: boolean;
+    refUrls?: string[];
 }
 
 export type User = {
@@ -13,27 +13,30 @@ export type User = {
     username: string;
     email: string;
     notes: Note[];
+};
+
+interface UserState {
+    user: User | null;
 }
 
-const initialState: User = {
-    fullName: "",
-    username: "",
-    email: "",
-    notes: [],
+const initialState: UserState = {
+    user: null,
 };
 
 const userSlice = createSlice({
-  name: "user",
-  initialState,
-  reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
-        Object.assign(state, action.payload);
+    name: "user",
+    initialState,
+    reducers: {
+        setUser: (state, action: PayloadAction<User>) => {
+            state.user = action.payload ?? null;
+        },
+        addNote: (state, action: PayloadAction<Note>) => {
+            if (state.user && Array.isArray(state.user.notes)) {
+                state.user.notes.push(action.payload);
+            }
+        },
+        resetUserState: () => initialState,
     },
-    addNote: (state, action: PayloadAction<Note>) => {
-        state.notes.push(action.payload);
-    },
-    resetUserState: () => initialState,
-  },
 });
 
 export const { setUser, addNote, resetUserState } = userSlice.actions;

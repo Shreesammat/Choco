@@ -4,22 +4,18 @@ import { User} from "../models/user.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-
-
-const generateAccessAndRefereshTokens = async(userId) =>{
+const generateJwtToken = async(userId) =>{
     try {
         const user = await User.findById(userId)
-        const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefreshToken()
+        const jwtToken = user.generateJwtToken()
 
-        user.refreshToken = refreshToken
+        user.jwtToken = jwtToken
         await user.save({ validateBeforeSave: false })
 
-        return {accessToken, refreshToken}
-
+        return jwtToken
 
     } catch (error) {
-        throw new ApiError(500, "Something went wrong while generating referesh and access token")
+        throw new ApiError(500, "Something went wrong while generating JWT token")
     }
 }
 
@@ -41,32 +37,17 @@ const registerUser = asyncHandler( async (req, res) => {
     if (existedUser) {
         throw new ApiError(409, "User with email or username already exists")
     }
-
-
-    const avatarLocalPath = req.files?.avatar[0]?.path;    
-
-    if (!avatarLocalPath) {
-        throw new ApiError(400, "Avatar file is required")
-    }
-
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-
-    if (!avatar) {
-        throw new ApiError(400, "could not upload on cloudinary")
-    }
-   
-
+    
     const user = await User.create({
         fullName,
-        avatar: avatar.url,
-        email, 
+        avatar: '',
+        email,
         password,
         username: username.toLowerCase()
     })
 
     const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
+        "-password"
     )
 
     if (!createdUser) {
@@ -102,9 +83,9 @@ const loginUser = asyncHandler(async (req, res) =>{
     throw new ApiError(401, "Invalid user credentials")
     }
 
-   const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
+   const {jwtToken} = await generateJwtToken(user._id)
 
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+    const loggedInUser = await User.findById(user._id).select("-password")
 
     const options = {
         httpOnly: true,
@@ -113,13 +94,13 @@ const loginUser = asyncHandler(async (req, res) =>{
 
     return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("jwtToken", jwtToken, options)
     .json(
         new ApiResponse(
             200, 
             {
-                user: loggedInUser, accessToken, refreshToken
+                user: loggedInUser,
+                token: jwtToken
             },
             "User logged In Successfully"
         )
@@ -132,7 +113,7 @@ const logoutUser = asyncHandler(async(req, res) => {
         req.user._id,
         {
             $unset: {
-                refreshToken: 1 
+                jwtToken: 1 
             }
         },
         {
@@ -147,15 +128,12 @@ const logoutUser = asyncHandler(async(req, res) => {
 
     return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
+    .clearCookie("jwtToken", options)
     .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
 const changeCurrentPassword = asyncHandler(async(req, res) => {
     const {oldPassword, newPassword} = req.body
-
-    
 
     const user = await User.findById(req.user?._id)
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
