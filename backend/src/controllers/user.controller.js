@@ -53,8 +53,8 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new ApiError(500, "Something went wrong while registering the user")
     }
 
-    return res.status(201).json(
-        new ApiResponse(200, createdUser, "User registered Successfully")
+    return res.status(201).cookie("jwtToken", jwtToken).json(
+        new ApiResponse(200, {createdUser, jwtToken}, "User registered Successfully")
     )
 
 } )
@@ -68,9 +68,7 @@ const loginUser = asyncHandler(async (req, res) =>{
         throw new ApiError(400, "email is required")
     }
     
-    const user = await User.findOne({
-        $or: [{email}]
-    })
+    const user = await User.findOne({ email }).select("+password")
 
     if (!user) {
         throw new ApiError(404, "User does not exist")
@@ -96,7 +94,7 @@ const loginUser = asyncHandler(async (req, res) =>{
     .cookie("jwtToken", jwtToken, options)
     .json(
         new ApiResponse(
-            200, 
+            200,
             {
                 user: loggedInUser,
                 token: jwtToken

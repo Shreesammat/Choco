@@ -63,7 +63,7 @@ export const updateFolderName = asyncHandler( async (req, res) => {
     }
 )
 
-export const getFoldersByUserId = asyncHandler (async (req, res) => {
+export const getFoldersByUserId = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     
     const folders = await Folder.find({userId: userId });

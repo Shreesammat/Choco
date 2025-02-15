@@ -135,7 +135,7 @@ router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 /**
  * @swagger
  * /user/update-account:
- *   patch:
+ *   put:
  *     summary: Update user account details
  *     tags: [User]
  *     security:
