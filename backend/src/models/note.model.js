@@ -7,6 +7,11 @@ const noteSchema = new Schema(
             ref: 'User',
             required: true
         },
+        folderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Folder',
+            required: true
+        },
         referenceUrl: {
             type: [String],
             required: true,
@@ -34,3 +39,5 @@ const noteSchema = new Schema(
         timestamps: true
     }
 )
+const Note = mongoose.model('Note', noteSchema);
+export default Note;
