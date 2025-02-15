@@ -22,7 +22,15 @@ const Navbar = () => {
     <nav className="bg-white dark:bg-black shadow-lg w-full fixed top-0 z-50">
       <div className="w-full mx-auto px-8 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
-          NoteMate
+        <svg width="70" height="65" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="200" height="200" rx="20" />
+  <text x="50" y="110" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#38BDF8">N</text>
+  <text x="110" y="110" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#a6a6a6">M</text>
+  <rect x="60" y="130" width="80" height="40" rx="10" fill="#FACC15"/>
+  <line x1="70" y1="140" x2="130" y2="140" stroke="#1E293B" stroke-width="4"/>
+  <line x1="70" y1="150" x2="130" y2="150" stroke="#1E293B" stroke-width="4"/>
+  <line x1="70" y1="160" x2="110" y2="160" stroke="#1E293B" stroke-width="4"/>
+</svg>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
