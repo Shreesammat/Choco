@@ -78,7 +78,7 @@ const NoteArea = ({ keepTheLatestNotesHidden }) => {
 
         {folderName === "" ? <Loader /> : <h1 className="pl-2" >{folderName}</h1>}
         <div key={notesList.length} className="overflow-y-scroll scrollbar-thin scrollbar-webkit overflow-x-hidden grid max-sm:place-items-center md:grid-cols-3 sm:grid-cols-2 gap-6 grid-cols-1 lg:grid-cols-4 row-auto">
-
+            {notesList.length === 0 && <>You have no Notes!</>}
             {notesList.map((note, ind) => <NoteBox keepTheLatestNotesHidden={keepTheLatestNotesHidden} delay={ind / 10} key={ind} noteObj={note} />)}
 
         </div>
