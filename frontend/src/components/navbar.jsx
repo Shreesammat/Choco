@@ -17,7 +17,7 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-lg w-full fixed top-0 z-50">
       <div className="w-full mx-auto px-8 py-4 flex justify-between items-center">

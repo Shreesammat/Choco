@@ -1,5 +1,5 @@
 const useFetch = () => {
-    const SignIn = async (url, data) => {
+    const signIn = async (url, data) => {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -13,7 +13,7 @@ const useFetch = () => {
         console.log(response);
         return response.json();
     };
-    const SignUp = async (url, data) => {
+    const signUp = async (url, data) => {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -27,7 +27,7 @@ const useFetch = () => {
         console.log(response);
         return response.json();
     }
-    return { SignIn, SignUp };
+    return { signIn, signUp };
 }
 
 export default useFetch;
