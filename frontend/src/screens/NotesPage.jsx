@@ -4,7 +4,7 @@ import { NoteBox } from "../components/notebox"
 import { useSelector } from "react-redux"
 import { ProfileNavbar } from "../components/navbar";
 
-export const ProfilePage = () => {
+export const NotesPage = () => {
     const [keepTheLatestNotesHidden, setKeepTheLatestNotesHidden] = useState(false);
     useEffect(() => {
         if (!keepTheLatestNotesHidden) return;
@@ -27,19 +27,22 @@ const ProfileMain = ({ keepTheLatestNotesHidden }) => {
         {/* //make breadcumbs here 
         //render folder section or notes inside folder section
         //currently rendering notres section */}
-        <NoteArea  keepTheLatestNotesHidden={keepTheLatestNotesHidden} />
+        <NoteArea keepTheLatestNotesHidden={keepTheLatestNotesHidden} />
 
     </div>
     )
 }
 
 
-const NoteArea = ({keepTheLatestNotesHidden }) => {
+const NoteArea = ({ keepTheLatestNotesHidden }) => {
     const notesList = useSelector(state => state.notesList);
-    return (<div key={notesList.length} className="overflow-y-scroll grid max-sm:place-items-center md:grid-cols-3 sm:grid-cols-2 gap-6 grid-cols-1 lg:grid-cols-4 row-auto">
+    return (<div className="w-full h-full flex flex-col gap-2">
+        <h1 className="pl-2" >folder name</h1>
+        <div key={notesList.length} className="overflow-y-scroll grid max-sm:place-items-center md:grid-cols-3 sm:grid-cols-2 gap-6 grid-cols-1 lg:grid-cols-4 row-auto">
 
-        {notesList.map((note, ind) => <NoteBox keepTheLatestNotesHidden={keepTheLatestNotesHidden} delay={ind / 10} key={ind} noteObj={note} />)}
+            {notesList.map((note, ind) => <NoteBox keepTheLatestNotesHidden={keepTheLatestNotesHidden} delay={ind / 10} key={ind} noteObj={note} />)}
 
+        </div>
     </div>
     )
 }

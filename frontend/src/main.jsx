@@ -8,12 +8,15 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import LandingPage from "./screens/LandingPage.jsx";
-import { ProfilePage } from "./screens/ProfilePage.jsx";
+
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store.js";
 import Login from "./components/Login.jsx";
 import SignUp from "./components/SignUp.jsx";
 import { PersistGate } from "redux-persist/integration/react";
+import { NotesPage } from "./screens/NotesPage.jsx";
+import { FoldersPage } from "./screens/FolderPage.jsx";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,7 +24,8 @@ const router = createBrowserRouter(
       <Route index element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<SignUp />} />
-      <Route path="u/:username" element={<ProfilePage />} />
+      <Route path="u/:username" element={<FoldersPage/>} />
+      <Route path="u/:username/:folderId" element={<NotesPage/>} />
     </Route>
   )
 );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import useTheme from "../hooks/useTheme";
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, time } from "framer-motion"
 import { useDispatch } from "react-redux";
 import SearchIcon from '@mui/icons-material/Search';
 import SchoolIcon from '@mui/icons-material/School';
@@ -12,13 +12,14 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { notesListAction } from "../redux/notesList";
+import { foldersAction } from "../redux/folderList";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-    
+
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-lg w-full fixed top-0 z-50">
+    <nav className="bg-white dark:bg-gray shadow-lg w-full fixed top-0 z-50">
       <div className="w-full mx-auto px-8 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
           Choco
@@ -46,13 +47,13 @@ const Navbar = () => {
             )}
           </button>
 
-          
-            <Link
-              to="/login"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
-            >
-              Login
-            </Link>
+
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
+          >
+            Login
+          </Link>
         </div>
 
         <button
@@ -91,14 +92,14 @@ const Navbar = () => {
             <span className="text-gray-700 dark:text-gray-300">Toggle Theme</span>
           </button>
 
-          
-            <Link
-              to="/login"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all text-center"
-              onClick={() => setIsOpen(false)}
-            >
-              Login
-            </Link>
+
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all text-center"
+            onClick={() => setIsOpen(false)}
+          >
+            Login
+          </Link>
         </div>
       </div>
     </nav>
@@ -207,25 +208,22 @@ const Bulletcolor = ({ color, borderColor, delay, setKeepTheLatestNotesHidden })
 
   let colorType;
   switch (color) {
-    case "bg-midYellowLight" :
-        colorType = 1;
-        break;
+    case "bg-midYellowLight":
+      colorType = 1;
+      break;
     case "bg-midRedLight":
-        colorType = 2;
-        break;
-        setLightColor("bg-midPurpleLight");
-    case "":
-        colorType = 3;
-        break;
-    case 4:
-        setLightColor("bg-midBlueLight");
-        setDarkColor("bg-midBlueDark");
-        break;
-    case 5:
-        setLightColor("bg-midGreenLight");
-        setDarkColor("bg-midGreenDark");
-        break;
-}
+      colorType = 2;
+      break;
+    case "bg-midPurpleLight":
+      colorType = 3;
+      break;
+    case "bg-midBlueLight":
+      colorType = 4;
+      break;
+    case "bg-midGreenLight":
+      colorType = 5;
+      break;
+  }
 
   useEffect(() => {
     if (!startAnimate) return;
@@ -244,9 +242,9 @@ const Bulletcolor = ({ color, borderColor, delay, setKeepTheLatestNotesHidden })
       const { width, height } = noteBox.getBoundingClientRect();
       w = width, h = height;
     }
-    
+
     setTimeout(() => {
-      dispatch(notesListAction.addNote({ draft: true, colorType }))
+      dispatch(notesListAction.addNote({ draft: true, colorType: colorType }))
     }, 10);
     setStartAnimate(true)
     setKeepTheLatestNotesHidden(true)
@@ -272,3 +270,87 @@ const Bulletcolor = ({ color, borderColor, delay, setKeepTheLatestNotesHidden })
   </div>
 }
 
+export const ProfileNavbar2 = ({ setKeepTheLatestNotesHidden }) => {
+  const [addIconColor, setAddIconColor] = useState("")
+  const [colorShowing, setColorShowing] = useState(false)
+  const [icon, setIcon] = useState(<AddCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(!colorShowing) return;
+    const timeout =  setTimeout(() => {
+      setIcon(
+        <motion.div
+          animate={{ rotate: 0, scale: 1 }}
+          initial={{ rotate: 180, scale: 1.2 }}
+          
+        >
+          <AddCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />
+        </motion.div>
+      )
+      setColorShowing(prev => !prev)
+    }, 500);
+
+    return () => clearTimeout(timeout)
+  }, [icon])
+
+  const handleClick = () => {
+
+    dispatch(foldersAction.addFolder({ draft: true }))
+
+    setAddIconColor(() => {
+      if (!colorShowing)
+        return "";
+      else return "rgb(58, 56, 56)"
+    })
+    setColorShowing(prev => !prev)
+    setIcon(() => {
+      if (colorShowing) return <motion.div
+        animate={{ rotate: 0, scale: 1 }}
+        initial={{ rotate: 180, scale: 1.2 }}
+      >
+        <AddCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />
+      </motion.div>
+      else return (<motion.div
+        initial={{ rotate: 0, scale: 1 }}
+        animate={{ rotate: 180, scale: 1.2 }}
+      ><RemoveCircleIcon sx={{ color: `${addIconColor}` }} fontSize="large" />
+      </motion.div>)
+    })
+  }
+  return (
+    <>
+      <div className="fixed top-0 z-40 py-2 justify-between flex pr-10 left-0 pl-36 w-screen h-14 items-center bg-white">
+        <div className="bg-transparent border-2 items-center rounded-3xl flex gap-2 justify-between w-fit h-fit">
+          <input placeholder="search here" className="bg-transparent focus:outline-none rounded-3xl px-10 py-1" ></input>
+          <div className="hover:bg-slate-100 active:scale-90 ease-linear duration-75 p-2 cursor-pointer rounded-full">
+            <SearchIcon />
+          </div>
+        </div>
+        <div className="bg-transparent border-2 items-center rounded-3xl flex gap-2 justify-between w-fit h-fit">
+          <div className="hover:bg-slate-100 active:scale-90 ease-linear duration-75 p-2 cursor-pointer rounded-full">
+            <StarsIcon />
+          </div>
+          <div className="hover:bg-slate-100 active:scale-90 ease-linear duration-75 p-2 cursor-pointer rounded-full">
+            <SettingsIcon />
+          </div>
+        </div>
+
+      </div>
+      <div className="fixed h-screen w-28 z-50 flex flex-col justify-start gap-2 items-center left-0 top-0 bg-white border-r-stone-200 border">
+        <div className="flex gap-2 justify-start h-fit items-center p-3 pt-4 pb-10">
+          <p className="">Choco</p>
+          <SchoolIcon />
+        </div>
+        <motion.div
+          onClick={handleClick}
+          className="cursor-pointer active:scale-90 ease-linear duration-75"
+        >
+          {icon}
+        </motion.div>
+        <br />
+
+      </div>
+    </>
+  )
+}

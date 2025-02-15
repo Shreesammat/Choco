@@ -4,12 +4,14 @@ import { persistReducer, persistStore } from "redux-persist";
 import notesListReducers from "./notesList";
 import themeSlice from "./themeSlice";
 import userSlice from "./userSlice";
+import folderReducer from "./folderList"
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
   notesList: notesListReducers,
   theme: themeSlice,
   user: userSlice,
+  folder: folderReducer
 });
 
 const persistConfig = {

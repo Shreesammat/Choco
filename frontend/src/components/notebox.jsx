@@ -15,15 +15,19 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
     const [modalTitle, setModalTitle] = useState("");
     const [showModal, setShowModal] = useState(false)
 
+    const saveNotes = () => {
+
+    }
+
     let colorType;
     switch (colorType) {
-        case "bg-midYellowLight" :
+        case "bg-midYellowLight":
             colorType = 1;
             break;
         case "bg-midRedLight":
             colorType = 2;
             break;
-            
+
         case "bg-midPurpleLight":
             colorType = 3;
             break;
@@ -86,28 +90,30 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
     }
 
     return (<>
-        {showModal && <Modal 
-        modalIsOpen={showModal}
-        onClose={() => setShowModal(false)} title={modalTitle} >
+        {showModal && <Modal
+            modalIsOpen={showModal}
+            onClose={() => setShowModal(false)} title={modalTitle} >
             {modalContent}
         </Modal>}
         <motion.div
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay, type: "spring" }}
-            className={`sm:max-w-80 max-w-[350px] w-full flex flex-col p-5 h-full min-h-52 max-h-72 ${lightColor} ${keepTheLatestNotesHidden && delay === 0 && 'invisible'} rounded-3xl noteBox`}>
+            className={`sm:max-w-80 max-w-[350px] w-full text-black flex flex-col p-5 h-full min-h-52 max-h-96 ${lightColor} ${keepTheLatestNotesHidden && delay === 0 && 'invisible'} rounded-3xl noteBox`}>
             <div className="h-[90%]" >
                 {isEditing ?
-                   
+
                     <div className="flex flex-col h-full gap-3" >
-                         <div className="h-10 w-full flex justify-end"> 
-                            <StarIcon onClick={makeFav}  className="cursor-pointer active:scale-90  ease-linear duration-75"/>
-                         </div>
+                        <div className="h-10 w-full flex justify-end">
+                            <StarIcon onClick={makeFav} className="cursor-pointer active:scale-90  ease-linear duration-75" />
+                        </div>
                         {keepTheLatestNotesHidden && delay === 0 ?
                             <input
+                                placeholder="note title"
                                 className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
                             :
                             <motion.input
+                                placeholder="note title"
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 className={`bg-transparent border border-${borderColor} focus:outline-none rounded px-2 py-1`} />
@@ -119,6 +125,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                                 className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
                             :
                             <motion.textarea
+                                placeholder="type your notes here"
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 className={`bg-transparent border min-h-32 border-${borderColor} focus:outline-none rounded px-2 py-1`} />
@@ -128,9 +135,9 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                     </div>
                     :
                     <>
-                    <div className="h-10 w-full flex justify-end"> 
-                            <StarIcon fillOpacity={100} color="yellow" fill={`${noteObj.favorite ? 'yellow': "white"}`}  onClick={makeFav}  className="cursor-pointer  active:scale-90  ease-linear duration-75"/>
-                         </div>
+                        <div className="h-10 w-full flex justify-end">
+                            <StarIcon fillOpacity={100} color="yellow" fill={`${noteObj.favorite ? 'yellow' : "white"}`} onClick={makeFav} className="cursor-pointer  active:scale-90  ease-linear duration-75" />
+                        </div>
                         {keepTheLatestNotesHidden && delay === 0 ?
                             <p className="text-stone-800 text-lg">{noteObj.title}</p>
                             :
@@ -161,12 +168,13 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                 {keepTheLatestNotesHidden && delay === 0 ?
                     <div
                         className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
-                        <BadgePlus className={`text-${borderColor}`} />
+                        <BadgePlus className={`text-stone-200`} />
                     </div>
                     :
                     <div
                         className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
                         <BadgePlus
+                            className="text-stone-200"
                             onClick={AddLink}
 
                         />
@@ -175,8 +183,8 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                 <div
                     onClick={showLinks}
                     className={`ease-linear flex duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
-                    <Link className={`text-${borderColor}`} />
-                    <p>+2</p>
+                    <Link className={`text-stone-200`} />
+                    <p className="text-stone-200" >+ {noteObj.refUrl?.length}</p>
                 </div>
             </div>
 
@@ -190,11 +198,18 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                         animate={{ y: 0, opacity: 1 }}
                         className="text-stone-800 text-lg text-opacity-75">{noteObj.createdDate}</motion.p>
                 }
+                {!isEditing ?
+                    <div
+                        onClick={() => setIsEditing(true)}
+                        className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
+                        <Pencil className={`text-stone-200`} />
+                    </div>:
                 <div
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => saveNotes()}
                     className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
-                    <Pencil className={`text-${borderColor}`} />
+                    <SaveIcon className={`text-stone-200`} />
                 </div>
+            }
             </div>
         </motion.div>
     </>)
