@@ -5,12 +5,6 @@
       "destination": "https://your-backend-url.com/api/:path*"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
