@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { BadgePlus, DeleteIcon, EditIcon, Link, Pencil, SaveIcon, Trash } from "lucide-react";
-import { modalContentAtom } from "../redux/modal.jsx";
 import { useSetRecoilState } from "recoil";
-import { Modal } from "./modal.jsx";
 
 export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
 
