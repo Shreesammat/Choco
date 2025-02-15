@@ -27,8 +27,10 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="md:w-1/2">
-          <div className="w-full h-64 bg-blue-100 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+        <div className="md:w-1/2 flex justify-center items-center">
+          <div className="ml-auto w-[80%] h-64 bg-blue-100 dark:bg-gray-700 rounded-3xl">
+            <img src="https://res.cloudinary.com/avhixorin/image/upload/v1739619371/pexels-minan1398-1629212_rvaama.jpg" alt="" className="rounded-3xl"/>
+          </div>
         </div>
       </div>
     </section>

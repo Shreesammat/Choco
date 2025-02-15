@@ -1,18 +1,25 @@
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { SignIn } = useFetch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { signIn } = useFetch();
+  const url = import.meta.env.VITE_LOGIN_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await SignIn("http://localhost:5000/api/auth/login", {
+      const data = await signIn(url, {
         email,
         password,
       });
-      console.log(data);
+      dispatch(setUser(data.data.user));
+      navigate("/u/:data.data.user.username");
     } catch (error) {
       console.log(error);
     }
@@ -64,12 +71,6 @@ const Login = () => {
             />
           </div>
 
-          <div className="flex justify-between items-center mb-4">
-            <a href="#" className="text-sm text-blue-500 hover:underline">
-              Forgot password?
-            </a>
-          </div>
-
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
@@ -80,7 +81,7 @@ const Login = () => {
 
         <p className="mt-4 text-center text-gray-600 dark:text-gray-300">
           Don&apos;t have an account?{" "}
-          <a href="#" className="text-blue-500 hover:underline">
+          <a href="/register" className="text-blue-500 hover:underline">
             Sign up
           </a>
         </p>
