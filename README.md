@@ -37,7 +37,12 @@
 🔹 Framer Motion for Animations 🎥
 
 ---
+## 📖 API Documentation
 
+For a detailed overview of all backend endpoints, visit our Swagger API docs:  
+[**NoteMate API Docs**](https://walrus-app-s94dg.ondigitalocean.app/api-docs) 🌐
+
+---
 ## 🚀 Getting Started
 
 ### **Prerequisites** 📌
@@ -92,4 +97,5 @@ Special thanks to these amazing technologies:
 ---
 
 🎉 **Made with ❤️ by FSociety** 🎉
+
 
