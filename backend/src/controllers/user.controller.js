@@ -21,7 +21,6 @@ const generateJwtToken = async(userId) =>{
 const registerUser = asyncHandler( async (req, res) => {
 
     const {fullName, email, username, password } = req.body
-   
 
     if (
         [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -49,6 +48,8 @@ const registerUser = asyncHandler( async (req, res) => {
         "-password"
     )
 
+    const jwtToken = await generateJwtToken(user._id);
+
     if (!createdUser) {
         throw new ApiError(500, "Something went wrong while registering the user")
     }
@@ -60,7 +61,6 @@ const registerUser = asyncHandler( async (req, res) => {
 } )
 
 const loginUser = asyncHandler(async (req, res) =>{
-    
     const {email, password} = req.body
     console.log(email);
 
