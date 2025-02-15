@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import useTheme from "../hooks/useTheme";
 import { useSelector } from "react-redux";
@@ -8,7 +8,7 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((state) => state.user);
-
+    const navigate = useNavigate();
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-lg w-full fixed top-0 z-50">
       <div className="w-full mx-auto px-8 py-4 flex justify-between items-center">

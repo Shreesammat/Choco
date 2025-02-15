@@ -13,7 +13,7 @@ export default function Hero() {
           </p>
           <div className="space-x-4">
             <Link 
-              to="#" 
+              to="/register" 
               className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
             >
               Get Started
