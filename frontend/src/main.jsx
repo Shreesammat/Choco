@@ -23,8 +23,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <RecoilRoot>
+      
       <RouterProvider router={router} />
-    </RecoilRoot>
+    
   </Provider>,
 )

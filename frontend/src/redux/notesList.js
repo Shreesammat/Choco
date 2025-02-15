@@ -7,7 +7,8 @@ const notesListInitialState = [
         createdDate: "May 21, 2020.",
         colorType: 2,
         favorite: false,
-        refUrl: ["google.com", "http/askdsflk.lavru"]
+        refUrl: ["google.com", "http/askdsflk.lavru"],
+        draft: false
     },
  
     {
@@ -16,7 +17,8 @@ const notesListInitialState = [
         createdDate: "May 21, 2020.",
         colorType: 3,
         favorite: false,
-        refUrl: ["google.com", "http/askdsflk.lavru"]
+        refUrl: ["google.com", "http/askdsflk.lavru"],
+        draft: false
     },
  
     {
@@ -25,7 +27,8 @@ const notesListInitialState = [
         createdDate: "May 21, 2020.",
         colorType: 1,
         favorite: false,
-        refUrl: ["google.com", "http/askdsflk.lavru"]
+        refUrl: ["google.com", "http/askdsflk.lavru"],
+        draft: false
     },
  
     {
@@ -34,7 +37,8 @@ const notesListInitialState = [
         createdDate: "May 21, 2020.",
         colorType: 4,
         favorite: false,
-        refUrl: ["google.com", "http/askdsflk.lavru"]
+        refUrl: ["google.com", "http/askdsflk.lavru"],
+        draft: false
     },
  
   

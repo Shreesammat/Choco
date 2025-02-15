@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BadgePlus, DeleteIcon, EditIcon, Link, Pencil, SaveIcon, Trash } from "lucide-react";
+import { BadgePlus, DeleteIcon, EditIcon, Link, Pencil, Save, SaveIcon, Trash } from "lucide-react";
 import { modalContentAtom } from "../redux/modal.jsx";
 import { useSetRecoilState } from "recoil";
 import { Modal } from "./modal.jsx";
+import { ElectricalServicesSharp } from "@mui/icons-material";
 
 export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
 
@@ -44,10 +45,19 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
     const showLinks = () => {
 
         setModalContent(<div className="flex flex-col gap-2 p-2 justify-center items-center">
-            {noteObj.refUrl.map((url, i) => <UrlArea key={i} url={url} />)}
+            {noteObj.refUrl.map((url, i) => <UrlArea draft={noteObj.draft} key={i} url={url} />)}
 
         </div>)
         setModalTitle("All attached urls")
+
+        document.getElementById('my_modal_1').showModal();
+    }
+
+    const AddLink = () => {
+        setModalContent(<div className="flex flex-col gap-2 p-2 justify-center items-center">
+            <AddNewUrlArea />
+        </div>)
+        setModalTitle("Attach a new url!")
 
         document.getElementById('my_modal_1').showModal();
     }
@@ -114,7 +124,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
             </div>
 
 
-            <div className="flex justify-star items-center">
+            <div className="flex py-3 items-center">
 
                 {keepTheLatestNotesHidden && delay === 0 ?
                     <div
@@ -124,7 +134,10 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                     :
                     <div
                         className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
-                        <BadgePlus className={`text-${borderColor}`} />
+                        <BadgePlus
+                            onClick={AddLink}
+                            
+                        />
                     </div>
                 }
                 <div
@@ -155,10 +168,34 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
     </>)
 }
 
-const UrlArea = ({ url }) => {
-    const [isEditing, setIsEditing] = useState(false)
+const AddNewUrlArea = () => {
+    const [URL, setURL] = useState("");
+    const handleSave = () => {
+
+    }
+    return <div className="flex w-full flex-this.start gap-4 items-center" >
+        <input
+            className="bg-transparent focus:outline-none border border-stone-200 rounded-md p-1"
+            value={URL}
+            onChange={(e) => setURL(e.target.value)} /> 
+        <Save onClick={handleSave}  className="cursor-pointer text-midGreenLight  active:scale-90 ease-linear duration-75"  />
+    </div>
+}
+
+const UrlArea = ({ url, draft }) => {
+    const [isEditing, setIsEditing] = useState(draft)
     const [URL, setURL] = useState(url);
     const handleSave = () => {
+        if (URL === url) {
+            console.log("first change the url and then update");
+            return;
+        }
+
+
+        //UPDATE THE URL;
+    }
+
+    const handleDelete = () => {
 
     }
 
@@ -169,8 +206,12 @@ const UrlArea = ({ url }) => {
             onChange={(e) => setURL(e.target.value)} /> : <p>{url}</p>}
         <div className="flex gap-1">
             {!isEditing ? <EditIcon className="cursor-pointer text-midYellowLight active:scale-90 ease-linear duration-75" onClick={() => setIsEditing(true)} /> :
-                <SaveIcon className="cursor-pointer text-midGreenLight active:scale-90 ease-linear duration-75" onClick={handleSave} />}
-            <Trash className="cursor-pointer text-midRedLight active:scale-90 ease-linear duration-75" />
+                <SaveIcon
+                    className="cursor-pointer text-midGreenLight active:scale-90 ease-linear duration-75"
+                    onClick={handleSave} />}
+            <Trash
+                onClick={handleDelete}
+                className="cursor-pointer text-midRedLight active:scale-90 ease-linear duration-75" />
         </div>
     </div>)
 }

@@ -5,7 +5,7 @@ import userSlice from "./userSlice"
 export const store =  configureStore ({
     reducer: {
         notesList: notesListReducers,
-        theme: themeSlice.reducer,
-        user: userSlice.reducer
+        theme: themeSlice,
+        user: userSlice
     }
 })

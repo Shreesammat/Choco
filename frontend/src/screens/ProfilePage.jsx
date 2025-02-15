@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-import { ProfileNavbar } from "../components/navbar"
+
 import { NoteBox } from "../components/notebox"
 import { useSelector } from "react-redux"
+import { ProfileNavbar } from "../components/navbar";
 
 export const ProfilePage = () => {
     const [keepTheLatestNotesHidden, setKeepTheLatestNotesHidden] = useState(false);
