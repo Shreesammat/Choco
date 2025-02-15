@@ -49,13 +49,13 @@ const FolderArea = () => {
         loading ? (
             <div>loading..</div>
         ) : (
+            <div key={folderList.length} className="overflow-auto max-h-full scrollbar-thin scrollbar-webkit grid max-sm:place-items-center md:grid-cols-3 sm:grid-cols-2 gap-6 grid-cols-1 lg:grid-cols-4 row-auto">
 
-            <div key={folderList.length} className="overflow-y-scroll bg-black grid max-sm:place-items-center md:grid-cols-3 sm:grid-cols-2 gap-6 grid-cols-1 lg:grid-cols-4 row-auto">
-                {folderList?.map((folder, ind) => (
-                    <Folder folderObj={folder} delay={ind / 10} key={ind} />
-                ))}
+            {folderList.map((folder, ind) => <Folder folderObj={folder} delay={ind / 10} key={ind} />)}
 
-            </div>
+        </div>
+
+
         )
     )
 }
