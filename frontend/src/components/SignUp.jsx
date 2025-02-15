@@ -26,7 +26,8 @@ const SignUp = () => {
       });
       setLoading(false)
       dispatch(setUser(data.data));
-      await fetchNotes(import.meta.env.VITE_NOTES_URL);
+      const love = await fetchNotes(import.meta.env.VITE_NOTES_URL);
+      console.log("The notes fetch res is:",love);
       navigate("/u/:data.data.username");
     } catch (error) {
       console.log(error);
