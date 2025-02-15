@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import SearchIcon from '@mui/icons-material/Search';
 import SchoolIcon from '@mui/icons-material/School';
 import StarsIcon from '@mui/icons-material/Stars';
@@ -9,6 +8,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { notesListAction } from "../redux/notesList";
+import { Stars } from "lucide-react";
 
 export const Navbar = () => {
     return (
@@ -86,13 +86,23 @@ export const ProfileNavbar = ({ setKeepTheLatestNotesHidden }) => {
     }
     return (
         <>
-            <div className="fixed top-0 z-40 py-2 left-0 pl-36 w-screen h-14 items-center bg-white">
+            <div className="fixed top-0 z-40 py-2 justify-between flex pr-10 left-0 pl-36 w-screen h-14 items-center bg-white">
                 <div className="bg-transparent border-2 items-center rounded-3xl flex gap-2 justify-between w-fit h-fit">
                     <input placeholder="search here" className="bg-transparent focus:outline-none rounded-3xl px-10 py-1" ></input>
                     <div className="hover:bg-slate-100 active:scale-90 ease-linear duration-75 p-2 cursor-pointer rounded-full">
                         <SearchIcon />
                     </div>
                 </div>
+
+                <div className="bg-transparent border-2 items-center rounded-3xl flex gap-2 justify-between w-fit h-fit">
+                    <div className="hover:bg-slate-100 active:scale-90 ease-linear duration-75 p-2 cursor-pointer rounded-full">
+                        <StarsIcon />
+                    </div>
+                    <div className="hover:bg-slate-100 active:scale-90 ease-linear duration-75 p-2 cursor-pointer rounded-full">
+                        <SettingsIcon />
+                    </div>
+                </div>
+                
 
             </div>
             <div className="fixed h-screen w-28 z-50 flex flex-col justify-start gap-2 items-center left-0 top-0 bg-white border-r-stone-200 border">
