@@ -18,8 +18,9 @@ const Login = () => {
         email,
         password,
       });
+      console.log("The signIn response is", data);
       dispatch(setUser(data.data.user));
-      // await fetchNotes(import.meta.env.VITE_NOTES_URL);
+      await fetchNotes(import.meta.env.VITE_NOTES_URL);
       navigate("/u/:data.data.user.username");
     } catch (error) {
       console.log(error);

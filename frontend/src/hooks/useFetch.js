@@ -12,7 +12,7 @@ const useFetch = () => {
     if (!response.ok) {
       throw new Error("Failed to sign in");
     }
-    console.log(response);
+    console.log("The signIn response is",response);
     return response.json();
   };
   const signUp = async (url, data) => {
@@ -40,7 +40,7 @@ const useFetch = () => {
     if(!response.ok) {
       throw new Error("Failed to fetch notes");
     }
-    console.log(response)
+    
     return response.json();
   };
   return { signIn, signUp, fetchNotes };
