@@ -1,14 +1,19 @@
 import { motion } from "framer-motion";
-import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useState } from "react";
-import { Pencil } from "lucide-react";
+import { BadgePlus, DeleteIcon, EditIcon, Link, Pencil, SaveIcon, Trash } from "lucide-react";
+import { modalContentAtom } from "../redux/modal.jsx";
+import { useSetRecoilState } from "recoil";
+import { Modal } from "./modal.jsx";
+
 export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
 
     const [isEditing, setIsEditing] = useState(false)
-
-
+    const [modalContent, setModalContent] = useState(<></>)
     const [lightColor, setLightColor] = useState("");
     const [darkColor, setDarkColor] = useState("")
+    const [modalTitle, setModalTitle] = useState("");
+
+
 
     useEffect(() => {
         switch (noteObj.colorType) {
@@ -35,80 +40,137 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
         }
     }, [])
     const borderColor = darkColor.slice(3);
-    console.log(borderColor)
+    console.log(noteObj)
+    const showLinks = () => {
 
-    return (<motion.div
-        initial={{ x: -50, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay, type: "spring" }}
-        className={`sm:max-w-80 max-w-[350px] w-full flex flex-col p-5 h-full min-h-52 max-h-72 ${lightColor} ${keepTheLatestNotesHidden && delay === 0 && 'invisible'} rounded-3xl noteBox`}>
-        <div className="h-[90%]" >
-            {isEditing ?
-                <div className="flex flex-col h-full gap-3" >
-                    {keepTheLatestNotesHidden && delay === 0 ?
-                        <input
-                            className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
-                        :
-                        <motion.input
-                            initial={{ y: -10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            className={`bg-transparent border border-${borderColor} focus:outline-none rounded px-2 py-1`} />
+        setModalContent(<div className="flex flex-col gap-2 p-2 justify-center items-center">
+            {noteObj.refUrl.map((url, i) => <UrlArea key={i} url={url} />)}
 
-                    }
+        </div>)
+        setModalTitle("All attached urls")
 
-                    {keepTheLatestNotesHidden && delay === 0 ?
-                        <textarea
-                            className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
-                        :
-                        <motion.textarea
-                            initial={{ y: -10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            className={`bg-transparent border min-h-32 border-${borderColor} focus:outline-none rounded px-2 py-1`} />
+        document.getElementById('my_modal_1').showModal();
+    }
 
-                    }
+    return (<>
+        <Modal title={modalTitle} >
+            {modalContent}
+        </Modal>
+        <motion.div
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay, type: "spring" }}
+            className={`sm:max-w-80 max-w-[350px] w-full flex flex-col p-5 h-full min-h-52 max-h-72 ${lightColor} ${keepTheLatestNotesHidden && delay === 0 && 'invisible'} rounded-3xl noteBox`}>
+            <div className="h-[90%]" >
+                {isEditing ?
+                    <div className="flex flex-col h-full gap-3" >
+                        {keepTheLatestNotesHidden && delay === 0 ?
+                            <input
+                                className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
+                            :
+                            <motion.input
+                                initial={{ y: -10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className={`bg-transparent border border-${borderColor} focus:outline-none rounded px-2 py-1`} />
 
-                </div>
-                :
-                <>
-                    {keepTheLatestNotesHidden && delay === 0 ?
-                        <p className="text-stone-800 text-lg">{noteObj.title}</p>
-                        :
-                        <motion.p
-                            initial={{ y: -10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            className="text-stone-900 text-xl font-medium">{noteObj.title}</motion.p>
+                        }
 
-                    }
-                    <br />
-                    {keepTheLatestNotesHidden && delay === 0 ?
-                        <p className="text-stone-800 text-lg">{noteObj.content}</p>
-                        :
-                        <motion.p
-                            initial={{ y: -10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            className="text-stone-900 text-xl ">{noteObj.content}</motion.p>
+                        {keepTheLatestNotesHidden && delay === 0 ?
+                            <textarea
+                                className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
+                            :
+                            <motion.textarea
+                                initial={{ y: -10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className={`bg-transparent border min-h-32 border-${borderColor} focus:outline-none rounded px-2 py-1`} />
 
-                    }
-                </>
+                        }
 
-            }
-        </div>
+                    </div>
+                    :
+                    <>
+                        {keepTheLatestNotesHidden && delay === 0 ?
+                            <p className="text-stone-800 text-lg">{noteObj.title}</p>
+                            :
+                            <motion.p
+                                initial={{ y: -10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="text-stone-900 text-xl font-medium">{noteObj.title}</motion.p>
 
-        <div className="flex justify-between items-center">
+                        }
+                        <br />
+                        {keepTheLatestNotesHidden && delay === 0 ?
+                            <p className="text-stone-800 text-lg">{noteObj.content}</p>
+                            :
+                            <motion.p
+                                initial={{ y: -10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="text-stone-900 text-xl text-opacity-90 ">{noteObj.content}</motion.p>
 
-            {keepTheLatestNotesHidden && delay === 0 ?
-                <p className="text-stone-800 text-lg ">{noteObj.createdDate}</p>
-                :
-                <motion.p
-                    initial={{ y: -10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="text-stone-800 text-lg text-opacity-75">{noteObj.createdDate}k</motion.p>
-            }
-            <div
-                onClick={() => setIsEditing(true)}
-                className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
-                <Pencil className={`text-${borderColor}`} />
+                        }
+                    </>
+
+                }
             </div>
+
+
+            <div className="flex justify-star items-center">
+
+                {keepTheLatestNotesHidden && delay === 0 ?
+                    <div
+                        className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
+                        <BadgePlus className={`text-${borderColor}`} />
+                    </div>
+                    :
+                    <div
+                        className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
+                        <BadgePlus className={`text-${borderColor}`} />
+                    </div>
+                }
+                <div
+                    onClick={showLinks}
+                    className={`ease-linear flex duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
+                    <Link className={`text-${borderColor}`} />
+                    <p>+2</p>
+                </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+
+                {keepTheLatestNotesHidden && delay === 0 ?
+                    <p className="text-stone-800 text-lg ">{noteObj.createdDate}</p>
+                    :
+                    <motion.p
+                        initial={{ y: -10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        className="text-stone-800 text-lg text-opacity-75">{noteObj.createdDate}</motion.p>
+                }
+                <div
+                    onClick={() => setIsEditing(true)}
+                    className={`ease-linear duration-75 active:scale-90 p-1 rounded-xl cursor-pointer bg-opacity-50`}>
+                    <Pencil className={`text-${borderColor}`} />
+                </div>
+            </div>
+        </motion.div>
+    </>)
+}
+
+const UrlArea = ({ url }) => {
+    const [isEditing, setIsEditing] = useState(false)
+    const [URL, setURL] = useState(url);
+    const handleSave = () => {
+
+    }
+
+    return (<div className="flex justify-between p-1 w-full">
+        {isEditing ? <input
+            className="bg-transparent focus:outline-none border border-stone-200 rounded-md p-1"
+            value={URL}
+            onChange={(e) => setURL(e.target.value)} /> : <p>{url}</p>}
+        <div className="flex gap-1">
+            {!isEditing ? <EditIcon className="cursor-pointer text-midYellowLight active:scale-90 ease-linear duration-75" onClick={() => setIsEditing(true)} /> :
+                <SaveIcon className="cursor-pointer text-midGreenLight active:scale-90 ease-linear duration-75" onClick={handleSave} />}
+            <Trash className="cursor-pointer text-midRedLight active:scale-90 ease-linear duration-75" />
         </div>
-    </motion.div>)
+    </div>)
 }

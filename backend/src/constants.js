@@ -1,1 +1,1 @@
-export const DB_NAME = "todobackend"
+export const DB_NAME = "Chocobackend"
