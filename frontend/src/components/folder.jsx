@@ -48,15 +48,15 @@ export const Folder = ({ folderObj, delay }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay }}
 
-        className="flex flex-col border active:scale-95 ease-linear duration-75 px-2 py-4 hover:border-stone-400 rounded-xl max-w-60 min-w-32 gap-2 cursor-pointer">
+        className="flex flex-col border active:scale-95 ease-linear duration-75 px-2 py-4 hover:border-stone-400 rounded-xl gap-2 min-w-44 sm:min-w-48 cursor-pointer w-fit ">
         <FolderIcon onClick={folderObj.name && openFolder} />
         {isEditing ?
-            <div className="flex w-full px-1 justify-between">
-                <input value={folderName} onChange={(e) => setFolderName(e.target.value)} className="w-fit bg-slate-100 border-stone-300 p-1 rounded border" placeholder="folder name" />
+            <div className="flex w-full px-1 gap-4 items-center justify-between">
+                <input value={folderName} onChange={(e) => setFolderName(e.target.value)} className="w-fit bg-slate-100 border-stone-300 p-1 max-w-28 sm:max-w-32 rounded border" placeholder="folder name" />
                 <SaveIcon onClick={saveFolderName} className="active:scale-95 text-green-500 ease-linear duration-100" />
             </div>
             :
-            <div className="flex w-full px-1 justify-between">
+            <div className="flex w-full px-1  gap-4 items-center justify-between">
                 <p>{folderObj.name}</p>
                 <EditIcon onClick={() => setIsEditing(true)} className="active:scale-95  text-yellow-500 ease-linear duration-100" />
             </div>

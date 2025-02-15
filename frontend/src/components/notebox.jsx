@@ -110,13 +110,13 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                         {keepTheLatestNotesHidden && delay === 0 ?
                             <input
                                 placeholder="note title"
-                                className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
+                                className={`bg-transparent placeholder-black border focus:outline-none rounded px-2 py-1`} />
                             :
                             <motion.input
                                 placeholder="note title"
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                className={`bg-transparent border border-${borderColor} focus:outline-none rounded px-2 py-1`} />
+                                className={`bg-transparent border placeholder-black border-${borderColor} focus:outline-none rounded px-2 py-1`} />
 
                         }
 
@@ -128,7 +128,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                                 placeholder="type your notes here"
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                className={`bg-transparent border min-h-32 border-${borderColor} focus:outline-none rounded px-2 py-1`} />
+                                className={`bg-transparent border min-h-32 placeholder-black border-${borderColor} focus:outline-none rounded px-2 py-1`} />
 
                         }
 
@@ -149,11 +149,11 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                         }
                         <br />
                         {keepTheLatestNotesHidden && delay === 0 ?
-                            <div className="h-[55%] overflow-y-scroll">
+                            <div className="h-[55%] overflow-y-scroll scrollbar-thin scrollbar-webkit">
                                 <p className="text-stone-800 text-sm sm:text-lg">{noteObj.content}</p>
                             </div>
                             :
-                            <div className="h-[55%] overflow-y-scroll scroll-smooth ">
+                            <div className="h-[55%] overflow-y-scroll scroll-smooth scrollbar-thin scrollbar-webkit ">
                                 <motion.p
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
@@ -226,7 +226,7 @@ const AddNewUrlArea = () => {
     }
     return <div className="flex w-full flex-this.start gap-4 items-center" >
         <input
-            className="bg-transparent focus:outline-none border border-stone-200 rounded-md p-1"
+            className="bg-transparent focus:outline-none border placeholder-black border-stone-200 rounded-md p-1"
             value={URL}
             onChange={(e) => setURL(e.target.value)} />
         <Save onClick={handleSave} className="cursor-pointer text-midGreenLight  active:scale-90 ease-linear duration-75" />
