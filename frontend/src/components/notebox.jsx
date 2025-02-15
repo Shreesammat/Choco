@@ -1,34 +1,41 @@
 import { motion } from "framer-motion";
 import EditIcon from '@mui/icons-material/Edit';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pencil } from "lucide-react";
 export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
-    let lightColor, darkColor;
-    switch (noteObj.colorType) {
-        case 1:
-            lightColor = "bg-midYellowLight";
-            darkColor = "bg-midYellowDark";
-            break;
-        case 2:
-            lightColor = "bg-midRedLight";
-            darkColor = "bg-midRedDark";
-            break;
-        case 3:
-            lightColor = "bg-midPurpleLight";
-            darkColor = "bg-midPurpleDark";
-            break;
-        case 4:
-            lightColor = "bg-midBlueLight";
-            darkColor = "bg-midBlueDark";
-            break;
-        case 5:
-            lightColor = "bg-midGreenLight";
-            darkColor = "bg-midGreenDark";
-    }
 
     const [isEditing, setIsEditing] = useState(false)
-    console.log(darkColor.slice(3))
+
+
+    const [lightColor, setLightColor] = useState("");
+    const [darkColor, setDarkColor] = useState("")
+
+    useEffect(() => {
+        switch (noteObj.colorType) {
+            case 1:
+                setLightColor("bg-midYellowLight");
+                setDarkColor("bg-midYellowDark");
+                break;
+            case 2:
+                setLightColor("bg-midRedLight");
+                setDarkColor("bg-midRedDark");
+                break;
+            case 3:
+                setLightColor("bg-midPurpleLight");
+                setDarkColor("bg-midPurpleDark");
+                break;
+            case 4:
+                setLightColor("bg-midBlueLight");
+                setDarkColor("bg-midBlueDark");
+                break;
+            case 5:
+                setLightColor("bg-midGreenLight");
+                setDarkColor("bg-midGreenDark");
+                break;
+        }
+    }, [])
     const borderColor = darkColor.slice(3);
+    console.log(borderColor)
 
     return (<motion.div
         initial={{ x: -50, opacity: 0 }}
@@ -40,7 +47,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                 <div className="flex flex-col h-full gap-3" >
                     {keepTheLatestNotesHidden && delay === 0 ?
                         <input
-                        className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
+                            className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
                         :
                         <motion.input
                             initial={{ y: -10, opacity: 0 }}
@@ -48,15 +55,15 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
                             className={`bg-transparent border border-${borderColor} focus:outline-none rounded px-2 py-1`} />
 
                     }
-                   
+
                     {keepTheLatestNotesHidden && delay === 0 ?
                         <textarea
-                        className={`bg-transparent border focus:outline-none rounded px-2 py-1`}  />
+                            className={`bg-transparent border focus:outline-none rounded px-2 py-1`} />
                         :
                         <motion.textarea
                             initial={{ y: -10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className={`bg-transparent border min-h-32 border-${borderColor} focus:outline-none rounded px-2 py-1`}  />
+                            className={`bg-transparent border min-h-32 border-${borderColor} focus:outline-none rounded px-2 py-1`} />
 
                     }
 
@@ -88,7 +95,7 @@ export const NoteBox = ({ noteObj, delay, keepTheLatestNotesHidden }) => {
         </div>
 
         <div className="flex justify-between items-center">
-            
+
             {keepTheLatestNotesHidden && delay === 0 ?
                 <p className="text-stone-800 text-lg ">{noteObj.createdDate}</p>
                 :
