@@ -74,6 +74,7 @@ export const getFoldersByUserId = asyncHandler(async (req, res) => {
 
 export const getNotesInFolder = asyncHandler(async (req, res) => {
     const { folderId } = req.params;
-    const notes = await Note.find({ folderId,  });
-    res.status(200).json(notes);
+    const notes = await Note.find({ folderId  });
+    const folderName = await Folder.findById(folderId);
+    res.status(200).json({notes: notes || [], folderName});
 })
