@@ -19,7 +19,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-white dark:bg-gray shadow-lg w-full fixed top-0 z-50">
+    <nav className="bg-white dark:bg-black shadow-lg w-full fixed top-0 z-50">
       <div className="w-full mx-auto px-8 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
           Choco

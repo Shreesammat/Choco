@@ -11,7 +11,7 @@ const SignUp = () => {
   const [password, setPassword] = React.useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { signUp } = useFetch();
+  const { signUp, fetchNotes } = useFetch();
   const url = import.meta.env.VITE_REGISTER_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +23,7 @@ const SignUp = () => {
         password,
       });
       dispatch(setUser(data.data));
+      await fetchNotes(import.meta.env.VITE_NOTES_URL);
       navigate("/u/:data.data.username");
     } catch (error) {
       console.log(error);
