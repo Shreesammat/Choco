@@ -50,6 +50,11 @@ const notesList = createSlice({
     name: 'notes',
     initialState: notesListInitialState,
     reducers: {
+        setNote: (state, action) => {
+            if(action.payload)
+            state = action.payload
+            else state = []
+        },
         addNote: (state, action) => {
             state.unshift(action.payload);
         },
